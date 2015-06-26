@@ -1,5 +1,5 @@
 # Verotel Flexpay for Woocommerce
-This plugin allows you to use Verotel Flexpay as a Gateway for Woocommerce.
+This plugin allows you to use Verotel Flexpay as a gateway for Woocommerce.
 
 ## How to install
-Upload this plugin to your wordpress plugins directory and activate like normal. Set your success URL on Verotel to your "Thank You" page on woocommerce.
+Upload this plugin to your Wordpress plugins directory and activate like normal. Set the success URL on Verotel to your "Thank You" page.
