@@ -1,1 +1,0 @@
-This plugin allows you to use Verotel Flexpay as a Gateway for Woocommerce

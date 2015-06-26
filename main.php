@@ -1,10 +1,9 @@
 <?php
 /* 
 Plugin Name: Verotel Flexpay Gateway for Woocommerce
-Plugin URI:
 Description: Allows for the use of Verotel Flexpay as a payment gateway for Woocommerce 
 Author: Robert Lopez
-Version: 1.1
+Version: 1.2
 Author URI: http://www.aboutrobertlopez.com 
 */ 
 
@@ -74,34 +73,34 @@ function init_verotel_gateway_class() {
 	  function init_form_fields(){
 		  $this -> form_fields = array(
                 'enabled' => array(
-                    'title' => __('Enable/Disable', 'mrova'),
+                    'title' => __('Enable/Disable', 'wc-verotel-gateway'),
                     'type' => 'checkbox',
-                    'label' => __('Enable Verotel Flexpay Payment Module.', 'mrova'),
+                    'label' => __('Enable Verotel Flexpay Payment Module.', 'wc-verotel-gateway'),
                     'default' => 'no'),
                 'title' => array(
-                    'title' => __('Title:', 'mrova'),
+                    'title' => __('Title:', 'wc-verotel-gateway'),
                     'type'=> 'text',
-                    'description' => __('This controls the title which the user sees during checkout.', 'mrova'),
-                    'default' => __('Credit or Debit Card', 'mrova')),
+                    'description' => __('This controls the title which the user sees during checkout.', 'wc-verotel-gateway'),
+                    'default' => __('Credit or Debit Card', 'wc-verotel-gateway')),
                 'description' => array(
-                    'title' => __('Description:', 'mrova'),
+                    'title' => __('Description:', 'wc-verotel-gateway'),
                     'type' => 'textarea',
-                    'description' => __('This controls the description which the user sees during checkout.', 'mrova'),
-                    'default' => __('Pay securely by Credit or Debit card through Verotel Secure Servers.', 'mrova')),
+                    'description' => __('This controls the description which the user sees during checkout.', 'wc-verotel-gateway'),
+                    'default' => __('Pay securely by Credit or Debit card through Verotel Secure Servers.', 'wc-verotel-gateway')),
                 'shop_id' => array(
-                    'title' => __('Shop ID', 'mrova'),
+                    'title' => __('Shop ID', 'wc-verotel-gateway'),
                     'type' => 'text',
                     'description' => __('Enter the Shop ID provided to you by Verotel')),
                 'signature' => array(
-                    'title' => __('Signature Key', 'mrova'),
+                    'title' => __('Signature Key', 'wc-verotel-gateway'),
                     'type' => 'text',
-                    'description' =>  __('Enter the signature key provided to you by Verotel', 'mrova'),
+                    'description' =>  __('Enter the signature key provided to you by Verotel', 'wc-verotel-gateway'),
                 )
             );
 	  }
 	  
 	  public function admin_options(){
-      echo '<h3>'.__('Verotel Flexpay Payment Gateway', 'mrova').'</h3>';
+      echo '<h3>'.__('Verotel Flexpay Payment Gateway', 'wc-verotel-gateway').'</h3>';
       echo '<table class="form-table">';
       // Generate the HTML For the settings form.
       $this -> generate_settings_html();
@@ -109,25 +108,22 @@ function init_verotel_gateway_class() {
 		
 	  }
  
-    /**
-     *  There are no payment fields for payu, but we want to show the description if set.
-     **/
     function payment_fields(){
         if($this -> description) echo wpautop(wptexturize($this -> description));
     }
 
     //Process payment and return the result
     function process_payment($order_id){
-		global $woocommerce;
-        $order = new WC_Order($order_id);
+      global $woocommerce;
+      $order = new WC_Order($order_id);
 		
-		//Create Verotel Link
-		$productInfo = 'Order_'. $order_id;
-		$str = $this->signature .':custom1=orderNo_'. $order_id .':description=' . $productInfo . ':priceAmount='. $order->order_total .':priceCurrency=USD:shopID='. $this->shop_id .':version=1';
-		$hash = sha1($str);
-		$productInfo = str_replace(" ","+",$productInfo);
-		$link = 'https://secure.verotel.com/order/purchase?priceAmount='. $order->order_total .'&priceCurrency=USD&signature='. $hash .'&version=1&shopID='. $this->shop_id .'&description=' . $productInfo . '&custom1=orderNo_' . $order_id;
-        return array('result' => 'success', 'redirect' => $link);
+  		//Create Verotel Link
+  		$productInfo = 'Order_'. $order_id;
+  		$str = $this->signature .':custom1=orderNo_'. $order_id .':description=' . $productInfo . ':priceAmount='. $order->order_total .':priceCurrency=USD:shopID='. $this->shop_id .':version=1';
+  		$hash = sha1($str);
+  		$productInfo = str_replace(" ","+",$productInfo);
+  		$link = 'https://secure.verotel.com/order/purchase?priceAmount='. $order->order_total .'&priceCurrency=USD&signature='. $hash .'&version=1&shopID='. $this->shop_id .'&description=' . $productInfo . '&custom1=orderNo_' . $order_id;
+          return array('result' => 'success', 'redirect' => $link);
     }
  
 }
