@@ -3,7 +3,7 @@
 Plugin Name: Verotel Flexpay Gateway for Woocommerce
 Description: Allows for the use of Verotel Flexpay as a payment gateway for Woocommerce 
 Author: Robert Lopez
-Version: 1.2
+Version: 1.3
 Author URI: http://www.aboutrobertlopez.com 
 */ 
 
@@ -36,7 +36,7 @@ function thank_you_page()
 	}
 }
 
-add_action('get_footer','thank_you_page');
+add_action('wp_loaded','thank_you_page');
 
 // Extend WC’s base gateway class so that you have access to important methods and the settings API
 function init_verotel_gateway_class() {
